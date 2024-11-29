@@ -82,7 +82,8 @@
             },
             grid: {
                 x: 0,
-                y: 0
+                y: 0,
+                space: 100
             }
         }
     };
@@ -109,7 +110,7 @@
             `${mx} ${my} ${vw} ${vh}`
         );
 
-        setStyleVar("--space", 100 / state.data.pixelRatio);
+        setStyleVar("--space", state.data.grid.space);
         setStyleVar("--offset-x", state.data.grid.x);
         setStyleVar("--offset-y", state.data.grid.y);
 
@@ -137,15 +138,20 @@
 
         state.data.viewBox.width = width + amountX;
         state.data.viewBox.height = height + amountY;
+        
         state.data.pixelRatio = state.data.viewBox.width / pageWidth;
+        const newspace = 100 / state.data.pixelRatio;
+        const gridShrinkX = state.data.grid.space - newspace;
+        const gridShrinkY = gridShrinkX / aspectRatio;
+        state.data.grid.space = newspace;
 
         const { minx, miny } = state.data.viewBox;
         const xpercent = state.data.mouse.pos.x / pageWidth;
         const ypercent = state.data.mouse.pos.y / pageHeight;
         state.data.viewBox.minx = minx + (-1 * amountX) * xpercent;
         state.data.viewBox.miny = miny + (-1 * amountY) * ypercent;
-        state.data.grid.x -= amountX * xpercent;
-        state.data.grid.y -= amountY * ypercent;
+        state.data.grid.x -= gridShrinkX;
+        state.data.grid.y -= gridShrinkY;
     });
     svg.addEventListener("mousemove", e => {
         const pos = {
@@ -161,8 +167,6 @@
 
             const { minx, miny } = state.data.viewBox;
             const { pixelRatio } = state.data;
-            const xoffset = minx + delta.x * pixelRatio;
-            const yoffset = miny + delta.y * pixelRatio;
             state.data.viewBox.minx = minx + delta.x * pixelRatio;
             state.data.viewBox.miny = miny + delta.y * pixelRatio;
             state.data.grid.x -= delta.x;
