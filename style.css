@@ -3,6 +3,11 @@
 :root {
     --viewport-width: 0px;
     --viewport-height: 0px;
+    --line: 2px;
+    --space: 100px;
+    --grid: #eee;
+    --offset-x: 0px;
+    --offset-y: 0px;
 }
 
 html, body {
@@ -27,6 +32,20 @@ body {
     svg {
         width: var(--viewport-width);
         height: var(--viewport-height);
+        background: repeating-linear-gradient(
+            90deg, 
+            var(--grid) 0px,
+            var(--grid) var(--line), 
+            transparent calc(1px + var(--line)),
+            transparent var(--space)
+        ),
+        repeating-linear-gradient(
+            var(--grid) 0px,
+            var(--grid) var(--line), 
+            transparent calc(1px + var(--line)),
+            transparent var(--space)
+        );
+        background-position: var(--offset-x) var(--offset-y);
     }
 
 }
