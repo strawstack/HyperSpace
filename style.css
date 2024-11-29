@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-    --example-variable: green;
+    --viewport-width: 0px;
+    --viewport-height: 0px;
 }
 
 html, body {
     padding: 0px;
     margin: 0px;
+    overflow: hidden;
 }
 
 body {
@@ -18,32 +20,13 @@ body {
     font-size: 1.3rem;
 }
 
-h1 {
-    color: var(--example-variable);
-}
-
 .app {
-    .menu {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        .main {
-            display: flex;
-            column-gap: 20px;
-            width: 100%;
-            height: 60px;
-            background: lightgreen;
-            
-            .btn {
-                height: 100%;
-                width: 97px;
-                background: lightsalmon;
-            }
-        }
-        .side {
-            width: 400px;
-            height: 100vh;
-            background: lightblue;
-        }
+    height: 100vh;
+    width: 100vw;
+
+    svg {
+        width: var(--viewport-width);
+        height: var(--viewport-height);
     }
 
 }
