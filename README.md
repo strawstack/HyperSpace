@@ -18,4 +18,6 @@ Edit the source of `hyperspace` as needed to add functionality like the abiltiy 
 
 # Screenshot
 
+Imagine this, but you can pan and zoom:
+
 ![](./screenshot.png)
