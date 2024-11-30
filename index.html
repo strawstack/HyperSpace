@@ -10,21 +10,15 @@
   <body>
 
     <div class="app">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <rect 
-          id="pattern-rect" 
-          fill="url(#Pattern)" 
-          width="0" height="0" /> <!-- width and height set by JS -->
-        <circle r="100" cx="1917" cy="1488" fill="red" />
-        <defs>      
-          <pattern id="Pattern" x="0" y="0" width="0.5" height="0.5">
-            <circle id="pattern-circle" r="4" cx="5" cy="5" fill="#ccc" />
-          </pattern>
-        </defs>
-        
-      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module">
+      import { hyperspace } from './hyperspace.js';
+      hyperspace(
+        document.querySelector("svg")
+      );
+    </script>
+
   </body>
 </html>

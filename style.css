@@ -31,8 +31,8 @@ body {
 
     svg {
         overflow: visible;
-        width: var(--viewport-width);
-        height: var(--viewport-height);
+        width: 100vw;
+        height: 100vh;
     }
 
 }

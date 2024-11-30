@@ -1,10 +1,27 @@
-(() => {
+export function hyperspace(userSvg) {
+    const qs = s => document.querySelector(s);
+    
+    //
+    // Inject SVG elements
+    //
+    const {
+        rect,
+        pattern,
+        defs
+    } = svgElements();
+
+    //
+    // REFS
+    //
+    const svg = userSvg || qs("svg");
+    svg.appendChild(rect);
+    svg.appendChild(defs);
+    const patternDef = pattern;
+    const patternArea = rect;
 
     //
     // HELPER
     //
-
-    const qs = s => document.querySelector(s);
 
     const subv = (a, b) => {
         return {
@@ -13,16 +30,37 @@
         };
     };
 
-    const copy = d => JSON.parse(JSON.stringify(d));
-
     function setStyleVar(name, value) {
         document.body.style.setProperty(
             name, `${value}px`
         );
     }
 
-    function backgroundGrid() {
-        return ``;
+    function svgElements() {
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect.setAttribute("id", "pattern-rect");
+        rect.style.fill = "url(#Pattern)";
+        
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("id", "pattern-circle");
+        circle.setAttribute("r", "4");
+        circle.setAttribute("cx", "5");
+        circle.setAttribute("cy", "5");
+        circle.style.fill = "#ccc";
+
+        const pattern = document.createElementNS("http://www.w3.org/2000/svg", "pattern");
+        pattern.setAttribute("id", "Pattern");
+        pattern.setAttribute("x", "0");
+        pattern.setAttribute("y", "0");
+        pattern.setAttribute("width", "0.5");
+        pattern.setAttribute("height", "0.5");
+
+        const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        
+        defs.appendChild(pattern);
+        pattern.appendChild(circle);
+
+        return { rect, pattern, defs };
     }
 
     //
@@ -88,13 +126,6 @@
             }
         }
     };
-
-    //
-    // REFS
-    //
-    const svg = qs("svg");
-    const patternDef = qs("#Pattern");
-    const patternArea = qs("svg #pattern-rect");
 
     //
     // RENDER
@@ -189,5 +220,4 @@
     svg.addEventListener("mouseup", e => {
         state.data.mouse.isDown = false;
     });
-
-})();
+}
