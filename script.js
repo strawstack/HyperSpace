@@ -32,7 +32,10 @@
         width: pageWidth,
         height: pageHeight
     } = document.body.getBoundingClientRect();
-    
+
+    const PAGES = 3;
+    const DOT_SPACING = 50;
+
     setStyleVar("--viewport-width", pageWidth);
     setStyleVar("--viewport-height", pageHeight);
 
@@ -110,10 +113,10 @@
             `${mx} ${my} ${vw} ${vh}`
         );
 
-        patternArea.setAttribute("width", pageWidth * 3);
-        patternArea.setAttribute("height", pageHeight * 3);
-        patternDef.setAttribute("width", 100/(pageWidth * 3));
-        patternDef.setAttribute("height", 100/(pageHeight * 3));
+        patternArea.setAttribute("width", pageWidth * PAGES);
+        patternArea.setAttribute("height", pageHeight * PAGES);
+        patternDef.setAttribute("width", DOT_SPACING/(pageWidth * PAGES));
+        patternDef.setAttribute("height", DOT_SPACING/(pageHeight * PAGES));
 
         // If new state nodes are present, create svg nodes for them
 
@@ -136,6 +139,7 @@
         const amountX = dir * state.data.zoom.step;
         const amountY = amountX / aspectRatio;
 
+        // Max zoom in
         if (state.data.viewBox.width + amountX <= 0) {
             return;
         }
@@ -144,8 +148,17 @@
         state.data.viewBox.height += amountY;
         
         const { minx, miny } = state.data.viewBox;
-        const xpercent = state.data.mouse.pos.x / pageWidth;
-        const ypercent = state.data.mouse.pos.y / pageHeight;
+        let xpercent = state.data.mouse.pos.x / pageWidth;
+        let ypercent = state.data.mouse.pos.y / pageHeight;
+
+        // Max zoom out
+        const zoomOutMax = pageWidth * PAGES;
+        if (state.data.viewBox.width >= zoomOutMax) {
+            state.data.viewBox.width = zoomOutMax;
+            state.data.viewBox.height = zoomOutMax / aspectRatio;
+            return; // Don't adjust minx and miny if zoomed to max
+        }
+
         state.data.viewBox.minx = minx + (-1 * amountX) * xpercent;
         state.data.viewBox.miny = miny + (-1 * amountY) * ypercent;
 
