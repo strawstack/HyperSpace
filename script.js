@@ -61,13 +61,17 @@
         },
         data: {
             viewBox: {
-                minx: 0,
-                miny: 0,
+                minx: pageWidth,
+                miny: pageHeight,
                 width: pageWidth,
                 height: pageHeight,
             },
             aspectRatio: pageWidth / pageHeight,
-            zoomStep: 100,
+            zoom: {
+                step: 100,
+                max: 1000,
+                min: 1
+            },
             mouse: {
                 pos: {
                     x: 0, 
@@ -86,6 +90,8 @@
     // REFS
     //
     const svg = qs("svg");
+    const patternDef = qs("#Pattern");
+    const patternArea = qs("svg #pattern-rect");
 
     //
     // RENDER
@@ -103,6 +109,11 @@
             "viewBox", 
             `${mx} ${my} ${vw} ${vh}`
         );
+
+        patternArea.setAttribute("width", pageWidth * 3);
+        patternArea.setAttribute("height", pageHeight * 3);
+        patternDef.setAttribute("width", 100/(pageWidth * 3));
+        patternDef.setAttribute("height", 100/(pageHeight * 3));
 
         // If new state nodes are present, create svg nodes for them
 
@@ -122,9 +133,13 @@
         const dir = (e.deltaY > 0) ? 1 : -1;        
         const { aspectRatio } = state.data;
         
-        const amountX = dir * state.data.zoomStep;
+        const amountX = dir * state.data.zoom.step;
         const amountY = amountX / aspectRatio;
 
+        if (state.data.viewBox.width + amountX <= 0) {
+            return;
+        }
+        
         state.data.viewBox.width += amountX;
         state.data.viewBox.height += amountY;
         
@@ -152,7 +167,7 @@
             state.data.viewBox.minx = minx + delta.x * pixelRatio;
             state.data.viewBox.miny = miny + delta.y * pixelRatio;
         }
-        
+
         state.data.mouse.pos = pos;
     });
     svg.addEventListener("mousedown", e => {

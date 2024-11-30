@@ -11,11 +11,14 @@
 
     <div class="app">
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <rect fill="url(#Pattern)" stroke="black" width="1278" height="954" />
-        <circle r="100" cx="639" cy="496" fill="red" />
+        <rect 
+          id="pattern-rect" 
+          fill="url(#Pattern)" 
+          width="0" height="0" /> <!-- width and height set by JS -->
+        <circle r="100" cx="1917" cy="1488" fill="red" />
         <defs>      
-          <pattern id="Pattern" x="0" y="0" width=".25" height=".25">
-            <circle r="5" cx="5" cy="5" fill="grey" />
+          <pattern id="Pattern" x="0" y="0" width="0.5" height="0.5">
+            <circle id="pattern-circle" r="5" cx="5" cy="5" fill="#ccc" />
           </pattern>
         </defs>
         
