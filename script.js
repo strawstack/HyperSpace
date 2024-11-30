@@ -67,7 +67,6 @@
                 height: pageHeight,
             },
             aspectRatio: pageWidth / pageHeight,
-            pixelRatio: 1,
             zoomStep: 100,
             mouse: {
                 pos: {
@@ -79,11 +78,6 @@
                     x: 0,
                     y: 0
                 }
-            },
-            grid: {
-                x: 0,
-                y: 0,
-                space: 100
             }
         }
     };
@@ -110,10 +104,6 @@
             `${mx} ${my} ${vw} ${vh}`
         );
 
-        setStyleVar("--space", state.data.grid.space);
-        setStyleVar("--offset-x", state.data.grid.x);
-        setStyleVar("--offset-y", state.data.grid.y);
-
         // If new state nodes are present, create svg nodes for them
 
         // If svg nodes are present without state nodes, delete them
@@ -130,28 +120,20 @@
     //
     svg.addEventListener("wheel", e => {
         const dir = (e.deltaY > 0) ? 1 : -1;        
-        const { aspectRatio, pixelRatio } = state.data;
-        const { width, height } = state.data.viewBox;
+        const { aspectRatio } = state.data;
         
         const amountX = dir * state.data.zoomStep;
         const amountY = amountX / aspectRatio;
 
-        state.data.viewBox.width = width + amountX;
-        state.data.viewBox.height = height + amountY;
+        state.data.viewBox.width += amountX;
+        state.data.viewBox.height += amountY;
         
-        state.data.pixelRatio = state.data.viewBox.width / pageWidth;
-        const newspace = 100 / state.data.pixelRatio;
-        const gridShrinkX = state.data.grid.space - newspace;
-        const gridShrinkY = gridShrinkX / aspectRatio;
-        state.data.grid.space = newspace;
-
         const { minx, miny } = state.data.viewBox;
         const xpercent = state.data.mouse.pos.x / pageWidth;
         const ypercent = state.data.mouse.pos.y / pageHeight;
         state.data.viewBox.minx = minx + (-1 * amountX) * xpercent;
         state.data.viewBox.miny = miny + (-1 * amountY) * ypercent;
-        state.data.grid.x -= gridShrinkX;
-        state.data.grid.y -= gridShrinkY;
+
     });
     svg.addEventListener("mousemove", e => {
         const pos = {
@@ -166,11 +148,9 @@
             );
 
             const { minx, miny } = state.data.viewBox;
-            const { pixelRatio } = state.data;
+            const pixelRatio = state.data.viewBox.width / pageWidth;
             state.data.viewBox.minx = minx + delta.x * pixelRatio;
             state.data.viewBox.miny = miny + delta.y * pixelRatio;
-            state.data.grid.x -= delta.x;
-            state.data.grid.y -= delta.y;
         }
         
         state.data.mouse.pos = pos;

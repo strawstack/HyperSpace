@@ -30,22 +30,9 @@ body {
     width: 100vw;
 
     svg {
+        overflow: visible;
         width: var(--viewport-width);
         height: var(--viewport-height);
-        background: repeating-linear-gradient(
-            90deg, 
-            var(--grid) 0px,
-            var(--grid) var(--line), 
-            transparent calc(1px + var(--line)),
-            transparent var(--space)
-        ),
-        repeating-linear-gradient(
-            var(--grid) 0px,
-            var(--grid) var(--line), 
-            transparent calc(1px + var(--line)),
-            transparent var(--space)
-        );
-        background-position: var(--offset-x) var(--offset-y);
     }
 
 }
